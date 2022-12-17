@@ -242,18 +242,19 @@ void lock_pairs(void)
 {
     int i;
     for (i = 0; i < pair_count ; i++)
-    {
-        if(!is_cycle(pairs[i].winner, pairs[i].loser))
+        {
+            if (!is_cycle(pairs[i].winner, pairs[i].loser))
             {
                 locked[pairs[i].winner][pairs[i].loser]=true;
             }
-    }
+        }
+
 
     /*print matrix para probar
     printf("\nLocked Matrix\n");
     for (i = 0; i < candidate_count; i++)
     {
-        for (j = 0; j < candidate_count; j++)
+        for (int j = 0; j < candidate_count; j++)
         {
             printf("%d  ", locked[i][j]);
         }
@@ -296,23 +297,29 @@ void print_winner(void)
 
 int is_cycle(int a, int b)
 {
-    //recorrer la fila j hasta encontrar un true. si el true esta en columna valor centinela (a)
-    //devuelvo false.
-    //si no, recorro la fila j hasta encontrar un true.
-    //si recorro la matrix candidate_count cantidad de veces
-    //y no devolvi false, devolver true (no hay ciclo)
-    int j = b;
-    for (int n = candidate_count; n >= 0; n--){
-        for (int k = 0; k < candidate_count; k++){
-            if (locked[j][k] == true)
-            {
-                if (k == a)
-                {
-                    return 1;
-                }
-                j = k;
-            }
+    if (locked[b][a] == true)
+    {
+        return 1;
+    }
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (locked[i][a] == true)
+        {
+            return is_cycle(i, b);
         }
     }
     return 0;
 }
+//pensar un forma de hacerla recursiva
+
+/*Pero basicamente
+Tenes que ir de adelanre a atras muchas veces
+Para checkear rodos los caminos
+Onda checkeo contra rodos los que pierdo yo
+Y todos los que pierden con los que perdi
+Y todos los que pierden esos
+Y asi sucesivamente
+Hasta que alguno llegue al que le queres gabar
+Si alguno esta en el que le queres ganar
+Estas por crear un ciclo*/
