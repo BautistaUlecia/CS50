@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+<h2>This is an index page. Here will go the values the user currently has.</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Stock</th>
+            <th>Amount</th>
+            <th>Current Price</th>
+            <th>Total Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for share in user_stocks %}
+        <tr>
+            <td >{{ share["stock"] }}</td>
+            <td >{{ share["SUM(amount)"]}}</td>
+            <td >{{ share["currentprice"] | usd}}</td>
+            <td>{{ share["totalprice"] | usd}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>CASH</td>
+            <td>{{user_cash[0]["cash"] | usd}}</td>
+        </tr>
+        <tr>
+            <td>TOTAL</td>
+            <td>{{(user_cash[0]["cash"] + current_worth) | usd}}</td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

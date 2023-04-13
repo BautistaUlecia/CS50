@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+<h2>This is an History page. Here will go all of the users transactions.</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Stock</th>
+            <th>Amount</th>
+            <th>Transaction Price</th>
+            <th>Date</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td >{{ transaction["stock"] }}</td>
+            <td >{{ transaction["amount"] }}</td>
+            <td >{{ transaction["buy_price"]}}</td>
+            <td >{{ transaction["date"] }}</td>
+            <td >{{ transaction["type"] }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}
