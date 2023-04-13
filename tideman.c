@@ -101,13 +101,6 @@ int main(int argc, string argv[])
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-    //en ranks se guarda en forma de array los candidatos
-    //en orden, segun subindice de candidates
-    //osea guardas 2-0-1 si elegis candidato 2 primero, 0 segundo 1 tercero
-    //rank es el rango donde puso el string name
-    //busco en el array de candidates un match de nombre, si lo encuentro
-    //actualizo ranks[] y retorno true
-
     for (int i = 0 ; i < candidate_count; i++)
     {
         if (!strcmp(candidates[i], name))
@@ -129,35 +122,10 @@ void record_preferences(int ranks[])
             preferences[ranks[i]][ranks[j]]++;
         }
     }
-
-    /*print matrix preferences para probar. Funciona bien la matriz no jodas
-    printf("Matriz preferences\n");
-    for (int i = 0; i < candidate_count; i++)
-    {
-        for (int j = 0; j < candidate_count; j++)
-        {
-            printf("%d  ", preferences[i][j]);
-        }
-        printf("\n");
-    }*/
-
-
-    //Ranks[n] es preferido sobre ranks[n+1]...[n+2]... hasta el final del array
-    //Preferences es un Arrray 2D. preferences[i][j] es la cantidad que prefiere
-    //Al candidato i sobre el candidato j.
-    //Itero sobre ranks dos veces, para i y para j, recorriendo desde el subindice
-    //Todos los demas subindices hasta el final del array.
-    //Lo que haya en ranks[i] lo prefiere sobre todos los ranks[j]
-    //Entonces hago preferences[i][j]++ para VALORES no SUBINDICES de ranks
+    
     return;
 }
 
-// Record pairs of candidates where one is preferred over the other
-//Me agrega un par duplicado y no toma el par de que alice le gana a bob (es el primero que deberia evaluar, 0 le gana a 1)
-
-//El error es que estoy modificando pairs[i] dos veces (ya que la asignacion ocurre en el loop para j) entonces
-//Se sobreescribe el primer pair (0 le gana a 1)
-//antes de escribir un pair chequear el array para que no exista y si no existe agregarlo
 void add_pairs(void)
 {
     int a, k, flag;
@@ -176,32 +144,14 @@ void add_pairs(void)
             }
         }
     }
-    /*Print de pairs para debugear
-    for (int i = 0; i < pair_count; i++)
-    {
-        printf("Pair number %d\n", i);
-        printf("Winner = %d, loser = %d\n", pairs[i].winner, pairs[i].loser);
-    }*/
 
-
-    //Los subindices de preferences para parejas son los valores con los valores intercambiados
-    //Es decir, [i][j] y luego [j][i] son los dos valores (prefiere i sobre j, prefiere j sobre i).
-    //Recorro el array preferences con un doble loop, evaluando [i][j]-[j][i] y luego [i+1][j+1]-[j+1][i+1]...etc
-    //Si el valor es distinto a cero, creo un pairs con winner como el subindice i si el numero es positivo, j si es negativo.
-    //Ya que si mas gente prefiere a i sobre j de la que prefiere a j sobre i, la resta [i][j]-[j][i] dara positiva.
     return;
 }
 
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    /*print pairs unsorted para debug
-    printf("\nUnsorted Pairs\n");
-    for (int i = 0; i < pair_count; i++)
-    {
-        printf("Pair number %d\n", i);
-        printf("Winner score = %d\n Loser score = %d\n", pairs[i].winner, pairs[i].loser);
-    }*/
+
 
     int i, j, strenght1, strenght2;
     pair aux;
@@ -218,25 +168,13 @@ void sort_pairs(void)
             }
         }
     }
-    /*print pairs sorted para debug
-    printf("\nSorted Pairs\n");
-    for (i = 0; i < pair_count; i++)
-    {
-        printf("Pair number %d\n", i);
-        printf("Winner score = %d\n Loser score = %d\n", pairs[i].winner, pairs[i].loser);
-    }*/
+
 
     return;
 }
 
 // Lock pairs into the candidate graph in order, without creating cycles
 
-//antes de agregar, chequeo que no cree un ciclo.
-//un ciclo seria piedra papel tijera, donde
-//0 le gana a 1, 1 a 2 y 2 a 0, o similar.
-//locked puede saber si esta por crear un ciclo, seria
-//un caso donde siguiendo las flechas yo vuelvo al candidato
-//donde empece.
 
 void lock_pairs(void)
 {
@@ -249,25 +187,6 @@ void lock_pairs(void)
             }
         }
 
-
-    /*print matrix para probar
-    printf("\nLocked Matrix\n");
-    for (i = 0; i < candidate_count; i++)
-    {
-        for (int j = 0; j < candidate_count; j++)
-        {
-            printf("%d  ", locked[i][j]);
-        }
-        printf("\n");
-    }*/
-
-
-    //En pairs tengo guardados cada par de ganador sobre perdedor
-    //Ordenados ahora de mayor a menor
-    //Por cada ganador a perdedor tengo que actualizar el boolean para esos subindices
-    //Con un True
-    //Es decir, Winner vale algo y Loser vale algo, esos dos valores son el subindice de
-    //Locked que tengo que actualizar
     return;
 }
 
@@ -287,11 +206,6 @@ void print_winner(void)
             printf("%s\n", candidates[j]);
     }
 
-
-    //El ganador es el que no tenga ninguna flecha apuntandole
-    //A el, es decir la fuente del grafico. En la matriz,
-    //El ganador es quien tenga en su columna, todos falses (creo)
-    //O si no, quien tenga en su fila todos true excepto para el mismo. (esto creo que no)
     return;
 }
 
@@ -311,15 +225,3 @@ int is_cycle(int a, int b)
     }
     return 0;
 }
-//pensar un forma de hacerla recursiva
-
-/*Pero basicamente
-Tenes que ir de adelanre a atras muchas veces
-Para checkear rodos los caminos
-Onda checkeo contra rodos los que pierdo yo
-Y todos los que pierden con los que perdi
-Y todos los que pierden esos
-Y asi sucesivamente
-Hasta que alguno llegue al que le queres gabar
-Si alguno esta en el que le queres ganar
-Estas por crear un ciclo*/
