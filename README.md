@@ -1,4 +1,5 @@
 # CS50
-Mis soluciones a los problemas dificiles de CS50 a medida que los voy resolviendo. 
 
-Los que me parecieron particularmente desafiantes por ahora: Tideman, filter-more (helpers.c), Finance
+my solutions to CS50's harder problems
+
+the ones i found more challenging: Tideman, filter-more (helpers.c), Finance
