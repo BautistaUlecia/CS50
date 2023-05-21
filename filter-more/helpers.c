@@ -7,18 +7,7 @@ void sobel3x3(int height, int width, RGBTRIPLE image[height][width], int a, int 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
-    //image es una matriz con todos los pixeles de la imagen.
-    //tiene height filas y width columnas.
 
-    //grayscale significa foto en blanco y negro. para lograrlo
-    //lo que hago es convertir los valores rgb en el mismo valor,
-    //manteniendo el "peso" que tenian, para que mantengan su significado.
-    //la mejor forma de hacer esto es tomar un promedio de los tres
-    //valores y convertirlos a los tres en ese valor.
-
-    //itero dos veces, una con i, otra con j para filas y columnas.
-    //para cada pixel calculo el promedio de los tres valores y luego
-    //lo asigno.
 
     for (int i = 0, n = height; i < n; i++)
     {
@@ -42,24 +31,7 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
-    //reflejar seria lo que conseguis si pones la foto en un espejo,
-    //es decir un pixel que esta a la izquierda terminaria a la derecha
-    //y viceversa. Todos los pixeles se mantienen, solo se reflejan.
-    //hago un doble loop i j para filas columnas y ubico cada pixel en
-    //el lugar que le corresponde
 
-    //creo que el calculo del lugar se puede hacer usando width-j, ya que
-    //si el pixel esta en el lugar 2, va a pasara a estar en el lugar width(final de la foto)-2
-
-    //el pixel que muevo va a ocupar el lugar de un pixel que ya esta, creo que tengo
-    //que hacer un swap usando un valor auxiliar para no perder nada
-
-    //por cada i j, agarro el pixel que esta en width-j y lo asigno a tmp, despues
-    //asigno a width-j lo que haya en j y finalmente asigno a j lo que haya en tmp
-
-    //despues de debuggear un ratito me di cuenta que si hago para todas las j, la imagen
-    //termina siendo la misma, ya que reflejo todos los pixeles. para que se espeje correctamente
-    //lo que tengo que hacer es reflejar hasta la mitad, es decir, hasta width/2
     RGBTRIPLE tmp;
 
     for (int i = 0; i < height; i++)
@@ -94,20 +66,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    //para blurrear una foto lo que hago es agarrar un pixel y asignarle
-    //en cada color un valor que sea el promedio de los valores de los
-    //pixeles vecinos para ese color.
-    //vecinos = todos los pixeles que lo rodeen, formando una caja de 3x3.
-    //supongo que va desde i-1 hasta i+1 y desde j-1 hasta j+1 o algo asi?
-    //en casos de esquinas es lo mismo, obviando que afuera de la matriz no hay nada,
-    //se toman los pixeles que valgan algo.
 
-    //itero para i j y por cada pixel sumo los 9 usando i-1 i i+1, j-1 j j+1 y eso lo asigno a i j
-
-    //ojo con segfault si estoy agarrando valores de la matriz que no existen, queda pensar
-    //como evaluar esos casos y listo
-
-    //lo termine pasando todo a una funcion auxiliar para que quede mas ordenado
 
     //copy the matrix for correct computation
     RGBTRIPLE copy[height][width];
@@ -138,11 +97,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
-    //esta es un poquito mas compleja. para detectar bordes,
-    //se agarra cada pixel y se computa su nuevo valor
-    //realizando dos sumas con peso de todos los pixeles que lo rodean.
-    //una suma es para el eje X y la otra para el eje Y.
-    //estas sumas con peso se realizan usando el operador sobel (aprender que es)
+
 
     //matriz para eje X de sobel        matriz para eje Y de sobel
 
@@ -150,17 +105,6 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     //  -2  0   2                       //  0   0   0
     //  -1  0   1                       //  1   2   1
 
-    //por cada pixel, se toman los 9 que lo rodean y se multiplican
-    //por lo que valgan segun donde se ubican en la matriz sobel.
-    //luego se suman y como tengo dos valores (uno para x, uno para y)
-    //lo que se hace es raiz de x^2 + y^2. ese valor lo pongo en el color del pixel
-
-    //cuidado que este valor tiene que estar cappeado en 255.
-    //en bordes, el ejercicio pide que identifiquemos cualquier pixel que
-    //esta mas alla de la imagen como si fuera un pixel negro solido (0,0,0)
-
-    //copiar la matriz para que los pixeles evaluados anteriormente no me modifiquen
-    //los que voy a evaluar luego
 
     //copy the matrix for correct computation
     RGBTRIPLE copy[height][width];
@@ -191,9 +135,6 @@ void average3x3(int height, int width, RGBTRIPLE image[height][width], int a, in
     float red_average = 0, blue_average = 0, green_average = 0;
     int red_average_int = 0, blue_average_int = 0, green_average_int = 0, count = 0;
 
-    //si i-1 es null, empezar desde i
-    //min y max van a ser mis variables, antes de entrar al loop
-    //las asigno segun si existen o no en la matriz
 
     //go through 3x3 (or smaller) matrix and add to each colors avg.
     for (int i = a - 1; i <= a + 1; i++)
@@ -245,21 +186,6 @@ void sobel3x3(int height, int width, RGBTRIPLE image[height][width], int a, int 
 
 
     //loop through 3x3 matrix
-    //creo que estoy accediendo a un pixel modificado anteriormente
-    //cuando evaluo para j-1 y eso me rompe todo
-    //la pregnunta es por que ese pixel modificado anterioremnte
-    //esta mal y no funciona como deberia
-
-    //pensar un poco en como estoy haciendo el orden de las cosas,
-    //quizas algo se rompe porque evaluo los pixeles de cierta forma
-    //en vez de en otra
-
-    //me estan dando numeros muy altos, debuggear empezando desde la primera
-    //vuelta para darme cuenta que pasa
-
-    //copiar la matriz ?
-
-
 
     for (int i = a - 1; i <= a + 1; i++)
     {
